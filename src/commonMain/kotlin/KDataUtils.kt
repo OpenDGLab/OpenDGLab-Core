@@ -4,16 +4,16 @@ object KDataUtils {
             return intArrayOf(0, 0)
         }
         val g = byteArrayToString(parseByteArray(bArr))
-        val substring: String = g.substring(5, 16)
-        return intArrayOf(substring.toInt(2), g.substring(16).toInt(2))
+//        val substring: String = g.substring(5, 16)
+        return intArrayOf(g.substring(5, 16).toInt(2), g.substring(16).toInt(2))
     }
     public fun byteArrayToString(bArr: ByteArray): String {
-//        return bArr.asList().map { commonBitwiseParse(it) }.joinToString("")
-        var str = ""
-        for (i in bArr.indices) {
-            str += commonBitwiseParse(bArr[i])
-        }
-        return str
+        return bArr.asList().map { commonBitwiseParse(it) }.joinToString("")
+//        var str = ""
+//        for (i in bArr.indices) {
+//            str += commonBitwiseParse(bArr[i])
+//        }
+//        return str
     }
     private fun commonBitwiseParse(b: Byte): String {
         return "" + (b.toInt() shr 7 and 1).toByte() + (b.toInt() shr 6 and 1).toByte() + (b.toInt() shr 5 and 1).toByte() + (b.toInt() shr 4 and 1).toByte() + (b.toInt() shr 3 and 1).toByte() + (b.toInt() shr 2 and 1).toByte() + (b.toInt() shr 1 and 1).toByte() + (b.toInt() shr 0 and 1).toByte()
@@ -47,9 +47,9 @@ object KDataUtils {
         while (binaryString2.length < 11) {
             binaryString2 = "0$binaryString2"
         }
-        val str = "00$binaryString2$binaryString"
-        println("test A:$binaryString , B:$binaryString2 ,apower:$i ,bpower:$i2")
-        return convertStringToByteArray(str)
+//        val str = "00$binaryString2$binaryString"
+        //println("test A:$binaryString , B:$binaryString2 ,apower:$i ,bpower:$i2")
+        return convertStringToByteArray("00$binaryString2$binaryString")
     }
     fun convertStringToByteArray(str: String): ByteArray {
         val bArr = ByteArray(3)
@@ -91,7 +91,7 @@ object KDataUtils {
         val substring: String = g.substring(2, 13)
         val parseInt: Int = g.substring(13).toInt(2)
         val parseInt2 = substring.toInt(2)
-        println("strength realA = " + parseInt2 / f907j + " realB = " + parseInt / f907j)
+        //println("strength realA = " + parseInt2 / f907j + " realB = " + parseInt / f907j)
         return intArrayOf(parseInt / f907j, parseInt2 / f907j)
     }
     //获取电量
