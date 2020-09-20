@@ -14,26 +14,26 @@ class WaveCenter {
     }
     data class WaveDetail(val name: String, val wave: BasicWave)
     data class BasicWaveData(
-        val A0: Int,
+        val A0: Int, //脉冲频率 左端值 取值 0-B
         val A1: Int,
         val A2: Int,
-        val B0: Int,
+        val B0: Int, //脉冲频率 右端值 A-100
         val B1: Int,
         val B2: Int,
-        val C0: Int,
+        val C0: Int, //脉冲形状 1 = 0.1s 取值 2-30
         val C1: Int,
         val C2: Int,
-        val J0: Int,
-        val J1: Int,
-        val J2: Int,
-        val PC0: Int,
+        val J0: Int, //小节真实时长 时长等于 向上取整(((J + 1) / 101)^(1.6) * 100) / 10
+        val J1: Int, //实际时长等于 向上取整(小节真实时长/(脉冲形状/10)) * (脉冲形状/10)
+        val J2: Int, //此值显示全部保留1位小数
+        val PC0: Int, //类型 1-固定 2-节间渐变 3-元内渐变 4-节内渐变 5-阶梯渐变 6-每节随机 7-每元随机
         val PC1: Int,
         val PC2: Int,
-        val JIE1: Int,
-        val JIE2: Int,
-        val L: Int,
-        val ZY: Int,
-        val points1: Array<BasicDataBean>,
+        val JIE1: Int, //第二小节是否启用 0-不启用 1-启用
+        val JIE2: Int, //第三小节
+        val L: Int, //休息时长 小节间休息时长 向上取整(L/10)
+        val ZY: Int, //高低频平衡 取值 0-20 越低高频越强 越高低频更强
+        val points1: Array<BasicDataBean>, //小节
         val points2: Array<BasicDataBean>,
         val points3: Array<BasicDataBean>
     ) : BasicWave {
@@ -96,7 +96,11 @@ class WaveCenter {
         }
 
     }
-    data class BasicDataBean(val x: Int, val y: Float, val anchor: Int)
+    data class BasicDataBean( //默认 y=x 一次函数
+        val x: Int, //序列值 0-当前小节脉冲形状值
+        val y: Float, //值 取值 0-20
+        val anchor: Int //是否为变化节点 0-否 1-是
+    )
     data class TouchWaveData(val data: Array<TouchDataBean>) : BasicWave {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
