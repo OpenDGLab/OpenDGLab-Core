@@ -15,7 +15,9 @@ OpenDGLab 是 DG-Lab 电刺激设备的协议组装库。通过 Kotlin Multiplat
 > 注：所有静态方法均在对应类中的 Companion 对象中
 
 ### KDataUtils
-KDataUtils 由原始 DataUtils 库中的部分运算代码移植而来。它包含主要的协议运算代码。KDataUtils 中的函数是私有的，无需您关注。
+KDataUtils 由原始 DataUtils 库中的部分运算代码移植而来。它包含主要的协议运算代码。KDataUtils 中的大部分函数是私有的，无需您关注。
+
+`convertStringToByteArray(String): ByteArray` 当您使用原版远程协议时可能需要用到十六进制字符串转字节数组的相关方法，KDataUtils 导出了此方法。
 
 ### OpenDGLab
 OpenDGLab 是主要的功能实现库。实例化 OpenDGLab 类后，可以通过内部的 `constants` `device` `deviceStatus` `eStimStatus` 实例访问对应的数据。

@@ -1,3 +1,5 @@
+import kotlin.js.JsName
+
 object KDataUtils {
     fun parseSetupData(bArr: ByteArray?): IntArray {
         if (bArr == null || bArr.isEmpty()) {
@@ -51,6 +53,7 @@ object KDataUtils {
         //println("test A:$binaryString , B:$binaryString2 ,apower:$i ,bpower:$i2")
         return convertStringToByteArray("00$binaryString2$binaryString")
     }
+    @JsName("convertStringToByteArray")
     fun convertStringToByteArray(str: String): ByteArray {
         val bArr = ByteArray(3)
         for (i in 0..2) {
