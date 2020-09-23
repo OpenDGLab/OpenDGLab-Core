@@ -1751,6 +1751,112 @@ class WaveCenter {
         @JsName("getBasicWaveList")
         public fun getBasicWaveList() = basic.keys.toTypedArray()
         fun stop() = KDataUtils.convertStringToByteArray("000000000000000000000000")
+        @JvmStatic
+        @JsName("fromOpenDGWaveGen")
+        fun fromOpenDGWaveGen(odgw: String) : BasicWave? {
+            // A0,A1,A2,B0,B1,B2,C0,C1,C2,J0,J1,J2,PC0,PC1,PC2,JIE1,JIE2,L,ZY|y=anchor,y=anchor,y=anchor|y=anchor,y=anchor,y=anchor|y=anchor,y=anchor,y=anchor
+            val points1 = arrayListOf<BasicDataBean>()
+            val points2 = arrayListOf<BasicDataBean>()
+            val points3 = arrayListOf<BasicDataBean>()
+            try {
+                val ss = odgw.split("|")
+                if (ss.size == 4) {
+                    val conf = ss[0].split(",")
+                    if (conf.size == 19) {
+                        val p1 = ss[1].split(",")
+                        if (p1.size == ss[6].toInt()) {
+                            val p2 = ss[2].split(",")
+                            if (ss[15].toInt() == 1 && p2.size == ss[7].toInt()) {
+                                val p3 = ss[3].split(",")
+                                if (ss[16].toInt() == 1 && p3.size == ss[8].toInt()) {
+                                    p1.forEachIndexed { index, value ->
+                                        val p = value.split("=")
+                                        if (p.size == 2) {
+                                            val anchor = p[1].toInt()
+                                            if (anchor != 0 && anchor != 1) return null
+                                            points1.add(BasicDataBean(index, p[0].toFloat(), anchor))
+                                        } else return null
+                                    }
+                                    p2.forEachIndexed { index, value ->
+                                        val p = value.split("=")
+                                        if (p.size == 2) {
+                                            val anchor = p[1].toInt()
+                                            if (anchor != 0 && anchor != 1) return null
+                                            points2.add(BasicDataBean(index, p[0].toFloat(), anchor))
+                                        } else return null
+                                    }
+                                    p3.forEachIndexed { index, value ->
+                                        val p = value.split("=")
+                                        if (p.size == 2) {
+                                            val anchor = p[1].toInt()
+                                            if (anchor != 0 && anchor != 1) return null
+                                            points3.add(BasicDataBean(index, p[0].toFloat(), anchor))
+                                        } else return null
+                                    }
+                                    val a0 = ss[0].toInt()
+                                    val a1 = ss[1].toInt()
+                                    val a2 = ss[2].toInt()
+                                    val b0 = ss[3].toInt()
+                                    val b1 = ss[4].toInt()
+                                    val b2 = ss[5].toInt()
+                                    val c0 = ss[6].toInt()
+                                    val c1 = ss[7].toInt()
+                                    val c2 = ss[8].toInt()
+                                    val j0 = ss[9].toInt()
+                                    val j1 = ss[10].toInt()
+                                    val j2 = ss[11].toInt()
+                                    val pc0 = ss[12].toInt()
+                                    val pc1 = ss[13].toInt()
+                                    val pc2 = ss[14].toInt()
+                                    val jie1 = ss[15].toInt()
+                                    val jie2 = ss[16].toInt()
+                                    val l = ss[17].toInt()
+                                    val zy = ss[18].toInt()
+                                    if (a0 > b0 || a0 < 0 || b0 > 100) return null
+                                    if (a1 > b1 || a1 < 0 || b1 > 100) return null
+                                    if (a2 > b2 || a2 < 0 || b2 > 100) return null
+                                    if (c0 < 2 || c0 > 30) return null
+                                    if (c1 < 2 || c1 > 30) return null
+                                    if (c2 < 2 || c2 > 30) return null
+                                    if (pc0 < 1 || pc0 > 7) return null
+                                    if (pc1 < 1 || pc1 > 7) return null
+                                    if (pc2 < 1 || pc2 > 7) return null
+                                    if (jie1 != 0 && jie1 != 1) return null
+                                    if (jie2 != 0 && jie2 != 1) return null
+                                    if (zy < 0 || zy > 20) return null
+                                    return BasicWaveData(
+                                        a0,
+                                        a1,
+                                        a2,
+                                        b0,
+                                        b1,
+                                        b2,
+                                        c0,
+                                        c1,
+                                        c2,
+                                        j0,
+                                        j1,
+                                        j2,
+                                        pc0,
+                                        pc1,
+                                        pc2,
+                                        jie1,
+                                        jie2,
+                                        l,
+                                        zy,
+                                        points1.toTypedArray(),
+                                        points2.toTypedArray(),
+                                        points3.toTypedArray()
+                                    )
+                                } else return null
+                            } else return null
+                        } else return null
+                    } else return null
+                } else return null
+            } catch (e: Exception) {
+                return null
+            }
+        }
     }
     private var timeSeqTouch: Int = 0
     private var wave : BasicWave? = null
@@ -1764,6 +1870,14 @@ class WaveCenter {
     private var f805q = 0
     private var f806r = 0.0f
     public val touchRaw = TouchRaw()
+    //Plot
+    private var f811w = 0
+    private var f812x = 0
+    private var f785A = 0
+    private var f813y = IntArray(100)
+    private var f814z = IntArray(100)
+    private var plot = mutableListOf<Int>()
+
     private fun fromBasicWaveToByteArray(wave: BasicWaveData) : ByteArray {
         val waveC: Int
         val waveDataList: Array<BasicDataBean>
@@ -1833,6 +1947,7 @@ class WaveCenter {
                     pow = 1
                 }
                 val i7: Int = this.f805q - pow
+                wavePlot(pow.toDouble(), i7, this.f806r.toInt())
                 var binaryString: String = pow.toString(radix = 2)
                 var binaryString2: String = i7.toString(radix = 2)
                 var binaryString3: String = this.f806r.toInt().toString(radix = 2)
@@ -1845,7 +1960,8 @@ class WaveCenter {
                 while (binaryString3.length < 5) {
                     binaryString3 = "0$binaryString3"
                 }
-                val result: ByteArray = KDataUtils.convertStringToByteArray("0000$binaryString3$binaryString2$binaryString") //发送的数据
+                val result: ByteArray =
+                    KDataUtils.convertStringToByteArray("0000$binaryString3$binaryString2$binaryString") //发送的数据
                 if (this.waveStrength >= 1.0f) {
                     this.waveStrength = 0.0f
                     this.waveTiming++
@@ -1914,6 +2030,7 @@ class WaveCenter {
                 this.waveStrength = (this.waveStrength * f800l.toFloat() + 1.0f) / f800l.toFloat()
                 this.f806r = 0.0f
                 this.f805q = 10
+                wavePlot(0.0,0,0)
                 var binaryString4: String = (0).toString(radix = 2)
                 var binaryString5: String = (0).toString(radix = 2)
                 var binaryString6: String = (0).toString(radix = 2)
@@ -1926,7 +2043,8 @@ class WaveCenter {
                 while (binaryString6.length < 5) {
                     binaryString6 = "0$binaryString6"
                 }
-                val result: ByteArray = KDataUtils.convertStringToByteArray("0000$binaryString6$binaryString5$binaryString4")
+                val result: ByteArray =
+                    KDataUtils.convertStringToByteArray("0000$binaryString6$binaryString5$binaryString4")
                 if (this.waveStrength >= 1.0f) {
                     this.waveStrength = 0.0f
                     this.waveConstructB = 0
@@ -1950,6 +2068,7 @@ class WaveCenter {
         }
         val i2 = (pow - pow3.toDouble()).toInt()
         val i3 = pow2.toInt()
+        wavePlot(pow, i2, i3)
         var binaryString: String = pow3.toString(radix = 2)
         var binaryString2: String = i2.toString(radix = 2)
         var binaryString3: String = i3.toString(radix = 2)
@@ -1969,6 +2088,7 @@ class WaveCenter {
         val ax: Int = wave.data[time].ax
         val ay: Int = wave.data[time].ay
         val az: Int = wave.data[time].az
+        wavePlot(ax.toDouble(), az, ay)
         var binaryString4: String = ax.toString(radix = 2)
         var binaryString5: String = ay.toString(radix = 2)
         var binaryString6: String = az.toString(radix = 2)
@@ -1995,6 +2115,11 @@ class WaveCenter {
         waveStrength = 0.0f
         f805q = 0
         f806r = 0.0f
+        f811w = 0
+        f812x = 0
+        f785A = 0
+        f813y = IntArray(100)
+        f814z = IntArray(100)
         touchRaw.x = 0.0
         touchRaw.y = 0.0
     }
@@ -2017,8 +2142,51 @@ class WaveCenter {
         waveStrength = 0.0f
         f805q = 0
         f806r = 0.0f
+        f811w = 0
+        f812x = 0
+        f785A = 0
+        f813y = IntArray(100)
+        f814z = IntArray(100)
         touchRaw.x = 0.0
         touchRaw.y = 0.0
+    }
+
+    @JsName("getWavePlot")
+    public fun getWavePlot() : IntArray {
+        return this.f814z
+    }
+
+    private fun wavePlot(pow: Double, i2: Int, i3: Int) {
+        for (i4 in 0..99) {
+            if (this.f811w < pow && this.f812x == 0) {
+                this.f813y[i4] = 1
+                this.f811w++
+            } else {
+                this.f811w = 0
+                if (this.f812x < i2) {
+                    this.f813y[i4] = 0
+                    this.f812x++
+                } else {
+                    if (pow == 0.0) {
+                        this.f813y[i4] = 0
+                    } else {
+                        this.f813y[i4] = 1
+                    }
+                    this.f811w = 1
+                    this.f812x = 0
+                }
+            }
+        }
+        for (i5 in 0..9) {
+            val i6 = i5 * 10
+            if (this.f813y.get(i6) == 0 && this.f813y[i6 + 1] == 0 && this.f813y[i6 + 2] == 0 && this.f813y[i6 + 3] == 0 && this.f813y[i6 + 4] == 0 && this.f813y[i6 + 5] == 0 && this.f813y[i6 + 6] == 0 && this.f813y[i6 + 7] == 0 && this.f813y.get(i6 + 8) == 0 && this.f813y[i6 + 9] == 0
+            ) {
+                this.f814z[i5] = 0
+            } else {
+                this.f814z[i5] = this.f785A + (i3 - this.f785A) * (i5 + 1) / 10
+            }
+        }
+        this.f785A = i3
     }
 
     @JsName("waveTick")
@@ -2034,8 +2202,13 @@ class WaveCenter {
             waveStrength = 0.0f
             f805q = 0
             f806r = 0.0f
+            f811w = 0
+            f812x = 0
+            f785A = 0
             touchRaw.x = 0.0
             touchRaw.y = 0.0
+            f813y = IntArray(100)
+            f814z = IntArray(100)
             return null
         }
         return when (waveCopy) {
