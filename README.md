@@ -118,6 +118,8 @@ WaveCenter 拥有下列**静态**方法。
 
 `stop() : ByteArray` 获取关闭波形的数组。
 
+`fromOpenDGWaveGen(String) : BasicWave` 从 OpenDGLab WaveGen 字符串生成一个波形实例。
+
 WaveCenter 含有以下实例对象。
 
 `touchWave : BasicWave` 触控控制对象，用于使用 `inputTouch` 方法。等于 APP 中的触摸功能。
@@ -131,6 +133,8 @@ WaveCenter 含有以下实例方法。
 `selectWave(BasicWave?)` 输入值可以为任意的 BasicWave 设置波形模式，null 时清除波形。
 
 `waveTick() : ByteArray?` 返回当前选择的波形所创建的字节数组。当没有选择波形时返回 null，此函数需要每 100 毫秒运行一次并传给 Wave 中的 setWave 方法。
+
+`getWavePlot() : IntArray` 返回一个波形变化数组，可用作波形绘图。
 
 ## 附录
 ### WriteBLE

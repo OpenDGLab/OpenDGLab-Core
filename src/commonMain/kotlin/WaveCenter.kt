@@ -1824,6 +1824,9 @@ class WaveCenter {
                                     if (jie1 != 0 && jie1 != 1) return null
                                     if (jie2 != 0 && jie2 != 1) return null
                                     if (zy < 0 || zy > 20) return null
+                                    if (pc0 == 1 && a0 != 0) return null
+                                    if (pc1 == 1 && a1 != 0) return null
+                                    if (pc2 == 1 && a2 != 0) return null
                                     return BasicWaveData(
                                         a0,
                                         a1,
@@ -1856,6 +1859,20 @@ class WaveCenter {
             } catch (e: Exception) {
                 return null
             }
+        }
+        @JvmStatic
+        @JsName("toDGWaveGen")
+        fun toDGWaveGen(wave: BasicWaveData) : String {
+            val p1 = wave.points1.joinToString(",") {
+                "${it.y}=${it.anchor}"
+            }
+            val p2 = wave.points2.joinToString(",") {
+                "${it.y}=${it.anchor}"
+            }
+            val p3 = wave.points3.joinToString(",") {
+                "${it.y}=${it.anchor}"
+            }
+            return "${wave.A0},${wave.A1},${wave.A2},${wave.B0},${wave.B1},${wave.B2},${wave.C0},${wave.C1},${wave.C2},${wave.J0},${wave.J1},${wave.J2},${wave.PC0},${wave.PC1},${wave.PC2},${wave.JIE1},${wave.JIE2},${wave.L},${wave.ZY}|$p1|$p2|$p3"
         }
     }
     private var timeSeqTouch: Int = 0
@@ -2146,9 +2163,18 @@ class WaveCenter {
         f812x = 0
         f785A = 0
         f813y = IntArray(100)
-        f814z = IntArray(100)
+        f814z = IntArray(10)
         touchRaw.x = 0.0
         touchRaw.y = 0.0
+    }
+
+    @JsName("toDGWaveGen")
+    fun toDGWaveGen() : String? {
+        val waveCopy = wave
+        if (waveCopy is BasicWaveData) {
+            return toDGWaveGen(waveCopy)
+        }
+        return null
     }
 
     @JsName("getWavePlot")
@@ -2179,7 +2205,7 @@ class WaveCenter {
         }
         for (i5 in 0..9) {
             val i6 = i5 * 10
-            if (this.f813y.get(i6) == 0 && this.f813y[i6 + 1] == 0 && this.f813y[i6 + 2] == 0 && this.f813y[i6 + 3] == 0 && this.f813y[i6 + 4] == 0 && this.f813y[i6 + 5] == 0 && this.f813y[i6 + 6] == 0 && this.f813y[i6 + 7] == 0 && this.f813y.get(i6 + 8) == 0 && this.f813y[i6 + 9] == 0
+            if (this.f813y[i6] == 0 && this.f813y[i6 + 1] == 0 && this.f813y[i6 + 2] == 0 && this.f813y[i6 + 3] == 0 && this.f813y[i6 + 4] == 0 && this.f813y[i6 + 5] == 0 && this.f813y[i6 + 6] == 0 && this.f813y[i6 + 7] == 0 && this.f813y.get(i6 + 8) == 0 && this.f813y[i6 + 9] == 0
             ) {
                 this.f814z[i5] = 0
             } else {
