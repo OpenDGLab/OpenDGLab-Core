@@ -10,6 +10,8 @@ OpenDGLab 是 DG-Lab 电刺激设备的协议组装库。通过 Kotlin Multiplat
 
 若要交叉编译其他目标类型，参见 Kotlin Multiplatform 编译配置。
 
+若要在 OpenDGLab WaveGen 中使用，请配置 JS 编译为 CommonJS。
+
 ## API
 本库仅提供对 DG-Lab 协议的组装，不提供对应的 BLE 发送和接收功能。
 > 注：所有静态方法均在对应类中的 Companion 对象中
