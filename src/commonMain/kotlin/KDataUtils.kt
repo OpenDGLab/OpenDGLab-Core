@@ -9,6 +9,7 @@ object KDataUtils {
 //        val substring: String = g.substring(5, 16)
         return intArrayOf(g.substring(5, 16).toInt(2), g.substring(16).toInt(2))
     }
+    @JsName("byteArrayToString")
     public fun byteArrayToString(bArr: ByteArray): String {
         return bArr.asList().map { commonBitwiseParse(it) }.joinToString("")
 //        var str = ""

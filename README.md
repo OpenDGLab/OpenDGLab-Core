@@ -10,7 +10,7 @@ OpenDGLab 是 DG-Lab 电刺激设备的协议组装库。通过 Kotlin Multiplat
 
 若要交叉编译其他目标类型，参见 Kotlin Multiplatform 编译配置。
 
-若要在 OpenDGLab WaveGen 中使用，请配置 JS 编译为 CommonJS。
+默认编译 JS 为 CommonJS 无法在浏览器中使用，若要在浏览器中使用，请打包为 UMD 模式。
 
 ## API
 本库仅提供对 DG-Lab 协议的组装，不提供对应的 BLE 发送和接收功能。
@@ -20,6 +20,8 @@ OpenDGLab 是 DG-Lab 电刺激设备的协议组装库。通过 Kotlin Multiplat
 KDataUtils 由原始 DataUtils 库中的部分运算代码移植而来。它包含主要的协议运算代码。KDataUtils 中的大部分函数是私有的，无需您关注。
 
 `convertStringToByteArray(String): ByteArray` 当您使用原版远程协议时可能需要用到十六进制字符串转字节数组的相关方法，KDataUtils 导出了此方法。
+
+`byteArrayToString(ByteArray): String` 当您使用原版远程协议时可能需要用到字节数组转十六进制字符串的相关方法，KDataUtils 导出了此方法。
 
 ### OpenDGLab
 OpenDGLab 是主要的功能实现库。实例化 OpenDGLab 类后，可以通过内部的 `constants` `device` `deviceStatus` `eStimStatus` 实例访问对应的数据。
