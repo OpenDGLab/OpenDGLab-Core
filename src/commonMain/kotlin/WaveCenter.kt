@@ -1764,11 +1764,11 @@ class WaveCenter {
                     val conf = ss[0].split(",")
                     if (conf.size == 19) {
                         val p1 = ss[1].split(",")
-                        if (p1.size == ss[6].toInt()) {
+                        if (p1.size == conf[6].toInt()) {
                             val p2 = ss[2].split(",")
-                            if (ss[15].toInt() == 1 && p2.size == ss[7].toInt()) {
+                            if ((conf[15].toInt() == 1 && p2.size == conf[7].toInt()) || (conf[15].toInt() == 0 && p2[0] == "")) {
                                 val p3 = ss[3].split(",")
-                                if (ss[16].toInt() == 1 && p3.size == ss[8].toInt()) {
+                                if (conf[16].toInt() == 1 && p3.size == conf[8].toInt() || (conf[16].toInt() == 0 && p3[0] == "")) {
                                     p1.forEachIndexed { index, value ->
                                         val p = value.split("=")
                                         if (p.size == 2) {
@@ -1777,7 +1777,7 @@ class WaveCenter {
                                             points1.add(BasicDataBean(index, p[0].toFloat(), anchor))
                                         } else return null
                                     }
-                                    p2.forEachIndexed { index, value ->
+                                    if (conf[15].toInt() == 1) p2.forEachIndexed { index, value ->
                                         val p = value.split("=")
                                         if (p.size == 2) {
                                             val anchor = p[1].toInt()
@@ -1785,7 +1785,7 @@ class WaveCenter {
                                             points2.add(BasicDataBean(index, p[0].toFloat(), anchor))
                                         } else return null
                                     }
-                                    p3.forEachIndexed { index, value ->
+                                    if (conf[16].toInt() == 1) p3.forEachIndexed { index, value ->
                                         val p = value.split("=")
                                         if (p.size == 2) {
                                             val anchor = p[1].toInt()
@@ -1793,25 +1793,25 @@ class WaveCenter {
                                             points3.add(BasicDataBean(index, p[0].toFloat(), anchor))
                                         } else return null
                                     }
-                                    val a0 = ss[0].toInt()
-                                    val a1 = ss[1].toInt()
-                                    val a2 = ss[2].toInt()
-                                    val b0 = ss[3].toInt()
-                                    val b1 = ss[4].toInt()
-                                    val b2 = ss[5].toInt()
-                                    val c0 = ss[6].toInt()
-                                    val c1 = ss[7].toInt()
-                                    val c2 = ss[8].toInt()
-                                    val j0 = ss[9].toInt()
-                                    val j1 = ss[10].toInt()
-                                    val j2 = ss[11].toInt()
-                                    val pc0 = ss[12].toInt()
-                                    val pc1 = ss[13].toInt()
-                                    val pc2 = ss[14].toInt()
-                                    val jie1 = ss[15].toInt()
-                                    val jie2 = ss[16].toInt()
-                                    val l = ss[17].toInt()
-                                    val zy = ss[18].toInt()
+                                    val a0 = conf[0].toInt()
+                                    val a1 = conf[1].toInt()
+                                    val a2 = conf[2].toInt()
+                                    val b0 = conf[3].toInt()
+                                    val b1 = conf[4].toInt()
+                                    val b2 = conf[5].toInt()
+                                    val c0 = conf[6].toInt()
+                                    val c1 = conf[7].toInt()
+                                    val c2 = conf[8].toInt()
+                                    val j0 = conf[9].toInt()
+                                    val j1 = conf[10].toInt()
+                                    val j2 = conf[11].toInt()
+                                    val pc0 = conf[12].toInt()
+                                    val pc1 = conf[13].toInt()
+                                    val pc2 = conf[14].toInt()
+                                    val jie1 = conf[15].toInt()
+                                    val jie2 = conf[16].toInt()
+                                    val l = conf[17].toInt()
+                                    val zy = conf[18].toInt()
                                     if (a0 > b0 || a0 < 0 || b0 > 100) return null
                                     if (a1 > b1 || a1 < 0 || b1 > 100) return null
                                     if (a2 > b2 || a2 < 0 || b2 > 100) return null
