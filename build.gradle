@@ -25,13 +25,6 @@ kotlin {
             }
         }
     }
-    linuxArm64 {
-        binaries {
-            sharedLib {
-                baseName = 'libopendglib'
-            }
-        }
-    }
     def hostOs = System.getProperty("os.name")
     def isMingwX64 = hostOs.startsWith("Windows")
     KotlinNativeTargetWithTests nativeTarget
@@ -42,7 +35,7 @@ kotlin {
     nativeTarget.with {
         binaries {
             sharedLib {
-                baseName = 'libopendglib'
+                baseName = 'libopendglab'
             }
         }
     }
