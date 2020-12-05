@@ -41,6 +41,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build
       run: ./gradlew assemble
+    - name: Packaging JS JVM
+      if: matrix.os == 'macos-latest'
+      uses: papeloto/action-zip@v1
+      with: 
+        files: build/libs/
+        dest: OpenDGLab-Core-JS-JVM.zip
     - name: Packaging Linux x64
       if: matrix.os == 'windows-latest'
       uses: papeloto/action-zip@v1
@@ -71,6 +77,16 @@ jobs:
       with: 
         files: build/bin/macosX64
         dest: OpenDGLab-Core-MacOS-X64.zip
+    - name: Upload Release Asset JS JVM
+      uses: actions/upload-release-asset@v1
+      if: matrix.os == 'macos-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
+        asset_path: ./OpenDGLab-Core-JS-JVM.zip
+        asset_name: OpenDGLab-Core-JS-JVM.zip
+        asset_content_type: application/zip
     - name: Upload Release Asset Linux x64
       uses: actions/upload-release-asset@v1
       if: matrix.os == 'windows-latest'
