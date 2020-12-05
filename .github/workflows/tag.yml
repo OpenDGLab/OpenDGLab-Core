@@ -17,9 +17,8 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 11
-    - uses: eskatos/gradle-command-action@v1
-      with:
-        arguments: assemble
+    - name: Build
+      run: ./gradlew assemble
     - name: Install zip
       uses: montudor/action-zip@v0.1.1
     - name: Packaging Linux x64
