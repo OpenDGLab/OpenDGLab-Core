@@ -25,35 +25,35 @@ kotlin {
     }
     macosX64('macosX64') {
         binaries {
-           staticLib {
+           sharedLib {
                baseName = 'libopendglab'
            }
         }
     }
     linuxX64("linuxX64") {
         binaries {
-            staticLib {
+            sharedLib {
                 baseName = 'libopendglab'
             }
         }
     }
     linuxArm64("linuxArm64") {
         binaries {
-            staticLib {
+            sharedLib {
                 baseName = 'libopendglab'
             }
         }
     }
     mingwX64("winX64") {
         binaries {
-            staticLib {
+            sharedLib {
                 baseName = 'libopendglab'
             }
         }
     }
     mingwX86("winX86") {
         binaries {
-            staticLib {
+            sharedLib {
                 baseName = 'libopendglab'
             }
         }
