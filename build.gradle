@@ -26,21 +26,21 @@ kotlin {
     macosX64('macosX64') {
         binaries {
            sharedLib {
-               baseName = 'libopendglab'
+               baseName = 'opendglab'
            }
         }
     }
     linuxX64("linuxX64") {
         binaries {
             sharedLib {
-                baseName = 'libopendglab'
+                baseName = 'opendglab'
             }
         }
     }
     linuxArm64("linuxArm64") {
         binaries {
             sharedLib {
-                baseName = 'libopendglab'
+                baseName = 'opendglab'
             }
         }
     }
