@@ -4,10 +4,29 @@ on:
     tags:
       - v*
 jobs:
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: OpenDGLab Core ${{ steps.get_version.outputs.version }}
+          body: |
+            OpenDGLab Core ${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
   gradle:
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
+    needs: [create_release]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Get latest release version number
@@ -52,25 +71,13 @@ jobs:
       with: 
         files: build/bin/macosX64
         dest: OpenDGLab-Core-MacOS-X64.zip
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: OpenDGLab Core ${{ steps.get_version.outputs.version }}
-        body: |
-          OpenDGLab Core ${{ steps.get_version.outputs.version }}
-        draft: false
-        prerelease: false
     - name: Upload Release Asset Linux x64
       uses: actions/upload-release-asset@v1
       if: matrix.os == 'windows-latest'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./OpenDGLab-Core-Linux-X64.zip
         asset_name: OpenDGLab-Core-Linux-X64.zip
         asset_content_type: application/zip
@@ -80,7 +87,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./OpenDGLab-Core-Linux-Arm64.zip
         asset_name: OpenDGLab-Core-Linux-Arm64.zip
         asset_content_type: application/zip
@@ -90,7 +97,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./OpenDGLab-Core-Windows-X86.zip
         asset_name: OpenDGLab-Core-Windows-X86.zip
         asset_content_type: application/zip
@@ -100,7 +107,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./OpenDGLab-Core-Windows-X64.zip
         asset_name: OpenDGLab-Core-Windows-X64.zip
         asset_content_type: application/zip
@@ -110,7 +117,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ needs.create_release.outputs.upload_url }}
         asset_path: ./OpenDGLab-Core-MacOS-X64.zip
         asset_name: OpenDGLab-Core-MacOS-X64.zip
         asset_content_type: application/zip
