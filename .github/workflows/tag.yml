@@ -36,16 +36,19 @@ jobs:
         dest: OpenDGLab-Core-Linux-Arm64.zip
     - name: Packaging Windows x86
       if: matrix.os == 'windows-latest'
+      uses: papeloto/action-zip@v1
       with: 
         files: build/bin/winX86
         dest: OpenDGLab-Core-Windows-X86.zip
     - name: Packaging Windows x86
       if: matrix.os == 'windows-latest'
+      uses: papeloto/action-zip@v1
       with: 
         files: build/bin/winX64
         dest: OpenDGLab-Core-Windows-X64.zip
     - name: Packaging MacOS x64
       if: matrix.os == 'macos-latest'
+      uses: papeloto/action-zip@v1
       with: 
         files: build/bin/macosX64
         dest: OpenDGLab-Core-MacOS-X64.zip
