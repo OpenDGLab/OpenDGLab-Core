@@ -84,15 +84,45 @@ kotlin {
                 implementation kotlin('test-js')
             }
         }
-        macosX64Main { }
-        macosX64Test { }
-        linuxX64Main { }
-        linuxX64Test { }
-        linuxArm64Main { }
-        linuxArm64Test { }
-        winX64Main { }
-        winX64Test { }
-        winX86Main { }
-        winX86Test { }
+        macosX64Main {
+            kotlin.srcDir('src/nativeMain')
+            resources.srcDir('src/nativeMain')
+        }
+        macosX64Test {
+            kotlin.srcDir('src/nativeTest')
+            resources.srcDir('src/nativeTest')
+        }
+        linuxX64Main {
+            kotlin.srcDir('src/nativeMain')
+            resources.srcDir('src/nativeMain')
+        }
+        linuxX64Test {
+            kotlin.srcDir('src/nativeTest')
+            resources.srcDir('src/nativeTest')
+        }
+        linuxArm64Main {
+            kotlin.srcDir('src/nativeMain')
+            resources.srcDir('src/nativeMain')
+        }
+        linuxArm64Test {
+            kotlin.srcDir('src/nativeTest')
+            resources.srcDir('src/nativeTest')
+        }
+        winX64Main {
+            kotlin.srcDir('src/nativeMain')
+            resources.srcDir('src/nativeMain')
+        }
+        winX64Test {
+            kotlin.srcDir('src/nativeTest')
+            resources.srcDir('src/nativeTest')
+        }
+        winX86Main {
+            kotlin.srcDir('src/nativeMain')
+            resources.srcDir('src/nativeMain')
+        }
+        winX86Test {
+            kotlin.srcDir('src/nativeTest')
+            resources.srcDir('src/nativeTest')
+        }
     }
 }
