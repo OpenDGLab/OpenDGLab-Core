@@ -17,6 +17,9 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Allow Gradle Wrapper
+      if: matrix.os == 'macos-latest'
+      run: chmod +x gradlew
     - name: Build
       run: ./gradlew assemble
     - name: Install zip
