@@ -111,6 +111,10 @@ publishing {
 }
 
 signing {
+    setRequired {
+        // signing is only required if the artifacts are to be published
+        gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+    }
     useInMemoryPgpKeys(
         System.getenv("GPG_PRIVATE_KEY"),
         System.getenv("GPG_PRIVATE_PASSWORD")
