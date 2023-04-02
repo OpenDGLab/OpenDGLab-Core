@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.opendglab"
-version = "2.0-alpha1"
+version = "2.0.0-alpha2"
 
 repositories {
     mavenCentral()
@@ -120,4 +120,8 @@ signing {
         System.getenv("GPG_PRIVATE_PASSWORD")
     )
     sign(publishing.publications)
+}
+
+tasks.withType<PublishToMavenRepository> {
+    dependsOn("signJvmPublication")
 }
