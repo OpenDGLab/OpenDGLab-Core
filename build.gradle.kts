@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.opendglab"
-version = "2.0.1-alpha3"
+version = "2.0.1-alpha4"
 
 repositories {
     mavenCentral()
@@ -123,5 +123,5 @@ signing {
 }
 
 tasks.withType<PublishToMavenRepository> {
-    dependsOn("signJvmPublication", "signJsPublication", "signKotlinMultiplatformPublication")
+    dependsOn("signJvmPublication", "signJsPublication", "signKotlinMultiplatformPublication", "signNativePublication")
 }
